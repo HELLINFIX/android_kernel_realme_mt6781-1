@@ -749,6 +749,11 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS   += -Os
 else
+ifdef CONFIG_INLINE_OPTIMIZATION
+KBUILD_CFLAGS += -mllvm -inline-threshold=210
+KBUILD_CFLAGS += -mllvm -inlinehint-threshold=300
+KBUILD_CFLAGS += -mllvm -unroll-threshold=110
+endif
 KBUILD_CFLAGS   += -O3
 endif
 
