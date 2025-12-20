@@ -13,8 +13,8 @@ export KBUILD_BUILD_HOST=COSMOS
 export KBUILD_BUILD_USER="INFIX"
 
 git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
-git clone --depth=1 https://github.com/sarthakroy2002/prebuilts_gcc_linux-x86_aarch64_aarch64-linaro-7 los-4.9-64
-git clone --depth=1 https://github.com/sarthakroy2002/linaro_arm-linux-gnueabihf-7.5 los-4.9-32
+git clone --depth=1 https://github.com/HELLINFIX/prebuilts_gcc_linux-x86_aarch64_aarch64-linaro-7 los-4.9-64
+git clone --depth=1 https://github.com/HELLINFIX/linaro_arm-linux-gnueabihf-7.5 los-4.9-32
 
 read -p "Wanna do dirty build? (Y/N): " build_type
 if [[ $build_type == "N" || $build_type == "n" ]]; then
@@ -41,14 +41,17 @@ PATH="${PWD}/clang/bin:${PATH}:${PWD}/clang/bin:${PATH}:${PWD}/clang/bin:${PATH}
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC="clang" \
-                      LD=ld.lld \
-		      AR=llvm-ar \
-		      NM=llvm-nm \
-		      OBJCOPY=llvm-objcopy \
-		      OBJDUMP=llvm-objdump \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
-                      CROSS_COMPILE="${PWD}/clang/bin/aarch64-linux-gnu-" \
-                      CROSS_COMPILE_ARM32="${PWD}/clang/bin/arm-linux-gnueabi-" \
+                      CROSS_COMPILE="${PWD}/los-4.9-64/bin/aarch64-linux-gnu-" \
+                      CROSS_COMPILE_ARM32="${PWD}/los-4.9-32/bin/arm-linux-gnueabihf-" \
+                      LLVM=1 \
+                      LD=ld.lld \
+                      AS=llvm-as \
+		              AR=llvm-ar \
+			          NM=llvm-nm \
+			          OBJCOPY=llvm-objcopy \
+                      OBJDUMP=llvm-objdump \
+                      STRIP=llvm-strip \
                       CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee error.log 
 }
 
