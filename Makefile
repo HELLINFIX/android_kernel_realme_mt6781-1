@@ -755,6 +755,8 @@ KBUILD_CFLAGS += -mllvm -inlinehint-threshold=300
 KBUILD_CFLAGS += -mllvm -unroll-threshold=110
 endif
 KBUILD_CFLAGS   += -O3
+KBUILD_CFLAGS += -march=armv8.2-a+dotprod+crc -mtune=cortex-a76 -moutline-atomics
+KBUILD_AFLAGS   += -march=armv8.2-a+dotprod+crc
 endif
 
 # Tell gcc to never replace conditional load with a non-conditional one
